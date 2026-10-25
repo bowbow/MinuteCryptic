@@ -6,13 +6,20 @@ test('solve a clue with progressive hints', async ({ page }) => {
   await page.getByRole('button', { name: /get a clue/i }).click();
 
   const firstClue = await page.getByRole('heading', { level: 1 }).textContent();
-  await page.getByRole('button', { name: 'Definition' }).click();
+  const definitionButton = page.getByRole('button', { name: 'Definition' });
+  const indicatorButton = page.getByRole('button', { name: 'Indicators' });
+  const fodderButton = page.getByRole('button', { name: 'Fodder' });
+  await expect(definitionButton).toHaveCSS('background-color', 'rgb(240, 198, 111)');
+  await expect(indicatorButton).toHaveCSS('background-color', 'rgb(240, 165, 143)');
+  await expect(fodderButton).toHaveCSS('background-color', 'rgb(145, 206, 213)');
+
+  await definitionButton.click();
   await expect(page.getByLabel('Definition hint')).toBeVisible();
   await expect(page.locator('.clue-highlight--definition')).toBeVisible();
-  await page.getByRole('button', { name: 'Indicators' }).click();
+  await indicatorButton.click();
   await expect(page.getByLabel('Indicators hint')).toBeVisible();
   await expect(page.locator('.clue-highlight--indicator')).toBeVisible();
-  await page.getByRole('button', { name: 'Fodder' }).click();
+  await fodderButton.click();
   await expect(page.getByLabel('Fodder hint')).toBeVisible();
   await expect(page.locator('.clue-highlight--fodder')).toBeVisible();
   await page.getByRole('button', { name: 'Reveal a letter' }).click();
