@@ -2,6 +2,8 @@ import type { CrypticClue, HintDetail } from '../types';
 
 const hint = (text: string, explanation: string): HintDetail => ({ text, explanation });
 
+type ClueSeed = Omit<CrypticClue, 'definitionParts'> & { definitionParts?: string[] };
+
 const anagram = (
   id: string,
   clue: string,
@@ -10,7 +12,7 @@ const anagram = (
   source: string,
   indicator: string,
   explanation: string,
-): CrypticClue => ({
+): ClueSeed => ({
   id,
   clue,
   answer,
@@ -32,7 +34,7 @@ const hidden = (
   source: string,
   indicator: string,
   reversed = false,
-): CrypticClue => ({
+): ClueSeed => ({
   id,
   clue,
   answer,
@@ -46,7 +48,7 @@ const hidden = (
   validation: { kind: 'hidden', source, reversed },
 });
 
-export const clues: CrypticClue[] = [
+const clueSeeds: ClueSeed[] = [
   anagram('anagram-silent', 'Quiet — listen, confused', 'SILENT', 'Quiet', 'LISTEN', 'confused', 'LISTEN becomes SILENT.'),
   anagram('anagram-garden', 'Plot danger disturbed', 'GARDEN', 'Plot', 'DANGER', 'disturbed', 'DANGER becomes GARDEN.'),
   anagram('anagram-master', 'Expert stream diverted', 'MASTER', 'Expert', 'STREAM', 'diverted', 'STREAM becomes MASTER.'),
@@ -297,34 +299,42 @@ export const clues: CrypticClue[] = [
 
   {
     id: 'double-bank', clue: "Financial institution on river's edge", answer: 'BANK', enumeration: '4', type: 'double-definition', definition: 'Financial institution / river edge',
+    definitionParts: ['Financial institution', "river's edge"],
     indicators: [], fodder: [], wordplayHint: 'Two definitions point to the same word.', fullParse: 'BANK is both a financial institution and the edge of a river.',
   },
   {
     id: 'double-bark', clue: 'Tree covering that a dog may make', answer: 'BARK', enumeration: '4', type: 'double-definition', definition: 'Tree covering / dog sound',
+    definitionParts: ['Tree covering', 'a dog may make'],
     indicators: [], fodder: [], wordplayHint: 'Think of a tree and a dog.', fullParse: 'BARK is both the covering of a tree and a sound made by a dog.',
   },
   {
     id: 'double-light', clue: "Illumination that's not heavy", answer: 'LIGHT', enumeration: '5', type: 'double-definition', definition: 'Illumination / not heavy',
+    definitionParts: ['Illumination', 'not heavy'],
     indicators: [], fodder: [], wordplayHint: 'One meaning is visible; the other concerns weight.', fullParse: 'LIGHT means both illumination and not heavy.',
   },
   {
     id: 'double-match', clue: 'Contest that may start a fire', answer: 'MATCH', enumeration: '5', type: 'double-definition', definition: 'Contest / fire starter',
+    definitionParts: ['Contest', 'start a fire'],
     indicators: [], fodder: [], wordplayHint: 'The same word belongs in sport and beside a candle.', fullParse: 'MATCH is both a contest and a small fire starter.',
   },
   {
     id: 'double-spring', clue: 'Season for a coil', answer: 'SPRING', enumeration: '6', type: 'double-definition', definition: 'Season / coil',
+    definitionParts: ['Season', 'coil'],
     indicators: [], fodder: [], wordplayHint: 'One meaning is in the calendar; the other is mechanical.', fullParse: 'SPRING is both a season and a resilient coil.',
   },
   {
     id: 'double-watch', clue: 'Observe a timepiece', answer: 'WATCH', enumeration: '5', type: 'double-definition', definition: 'Observe / timepiece',
+    definitionParts: ['Observe', 'timepiece'],
     indicators: [], fodder: [], wordplayHint: 'A verb and a noun share this spelling.', fullParse: 'WATCH means both observe and a timepiece.',
   },
   {
     id: 'double-file', clue: 'Folder with a smoothing tool', answer: 'FILE', enumeration: '4', type: 'double-definition', definition: 'Folder / smoothing tool',
+    definitionParts: ['Folder', 'smoothing tool'],
     indicators: [], fodder: [], wordplayHint: 'Think of an office object and a workshop tool.', fullParse: 'FILE is both a folder of documents and a tool for smoothing.',
   },
   {
     id: 'double-current', clue: 'Present flow', answer: 'CURRENT', enumeration: '7', type: 'double-definition', definition: 'Present / flow',
+    definitionParts: ['Present', 'flow'],
     indicators: [], fodder: [], wordplayHint: 'One meaning concerns time; the other concerns movement.', fullParse: 'CURRENT means both present and a flow of water or electricity.',
   },
 
@@ -371,22 +381,27 @@ export const clues: CrypticClue[] = [
 
   {
     id: 'cryptic-mushroom', clue: 'It can grow rapidly while kept in the dark', answer: 'MUSHROOM', enumeration: '8', type: 'cryptic-definition', definition: 'Something that grows rapidly and may be kept in the dark',
+    definitionParts: ['It can grow rapidly while kept in the dark'],
     indicators: [], fodder: [], wordplayHint: 'Read the whole clue as one playful definition.', fullParse: 'The whole clue describes a MUSHROOM literally and plays on “mushroom” meaning to grow rapidly.',
   },
   {
     id: 'cryptic-egg-timer', clue: 'It counts down before breakfast is done', answer: 'EGG TIMER', enumeration: '3,5', type: 'cryptic-definition', definition: 'A device that counts down while an egg cooks',
+    definitionParts: ['It counts down before breakfast is done'],
     indicators: [], fodder: [], wordplayHint: 'The whole clue describes a small kitchen device.', fullParse: 'An EGG TIMER counts down the cooking time for a breakfast egg.',
   },
   {
     id: 'cryptic-alarm-clock', clue: 'A wake-up call with hands', answer: 'ALARM CLOCK', enumeration: '5,5', type: 'cryptic-definition', definition: 'A timepiece that wakes you',
+    definitionParts: ['A wake-up call with hands'],
     indicators: [], fodder: [], wordplayHint: 'The “hands” belong to a timekeeping object.', fullParse: 'An ALARM CLOCK makes a wake-up call and traditionally has hands.',
   },
   {
     id: 'cryptic-password', clue: 'Something you give a computer but should not tell anyone', answer: 'PASSWORD', enumeration: '8', type: 'cryptic-definition', definition: 'A secret used to gain computer access',
+    definitionParts: ['Something you give a computer but should not tell anyone'],
     indicators: [], fodder: [], wordplayHint: 'The whole clue describes a digital secret.', fullParse: 'A PASSWORD is supplied to a computer for access but should be kept secret.',
   },
   {
     id: 'cryptic-bookmark', clue: 'It knows where you stopped without reading', answer: 'BOOKMARK', enumeration: '8', type: 'cryptic-definition', definition: 'A marker that keeps your place in a book',
+    definitionParts: ['It knows where you stopped without reading'],
     indicators: [], fodder: [], wordplayHint: 'The whole clue describes a reader’s small helper.', fullParse: 'A BOOKMARK records where you stopped in a book without itself reading.',
   },
 
@@ -416,3 +431,8 @@ export const clues: CrypticClue[] = [
     wordplayHint: 'Reverse WARD and add the abbreviation for learner.', fullParse: 'Speak slowly is DRAW (WARD returns) + L (learner).',
   },
 ];
+
+export const clues: CrypticClue[] = clueSeeds.map((clue) => ({
+  ...clue,
+  definitionParts: clue.definitionParts ?? [clue.definition],
+}));

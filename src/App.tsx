@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { clues } from './data/clues';
 import { letterPositions, maskAnswer, revealNextLetter } from './lib/answer';
 import { advanceDeck, createDeck } from './lib/deck';
+import { segmentClueText } from './lib/clue-text';
 import {
   emptyReveals,
   restoreState,
@@ -138,7 +139,17 @@ export default function App() {
 
           <article className="clue-card">
             <span className="quote-mark" aria-hidden="true">“</span>
-            <h1 id="clue-heading">{currentClue.clue}</h1>
+            <h1 id="clue-heading">
+              {state.reveals.definition
+                ? segmentClueText(currentClue.clue, currentClue.definitionParts).map((segment, index) =>
+                    segment.isDefinition ? (
+                      <mark className="definition-highlight" key={`${segment.text}-${index}`}>{segment.text}</mark>
+                    ) : (
+                      segment.text
+                    ),
+                  )
+                : currentClue.clue}
+            </h1>
             <p className="enumeration">({currentClue.enumeration})</p>
             <p className="answer-mask" aria-label={`Answer pattern: ${maskAnswer(currentClue.answer, new Set(state.reveals.letters)).replaceAll('_', 'blank')}`}>
               {maskAnswer(currentClue.answer, new Set(state.reveals.letters))}
@@ -146,6 +157,18 @@ export default function App() {
           </article>
 
           <div className="hint-grid" aria-label="Clue hints">
+            <div>
+              <RevealButton expanded={state.reveals.definition} onClick={() => setReveal('definition')}>Show definition</RevealButton>
+              {state.reveals.definition && (
+                <div className="reveal" aria-live="polite">
+                  <section className="hint-panel" aria-label="Definition hint">
+                    <p className="hint-label">Definition</p>
+                    <p>{currentClue.definitionParts.length > 1 ? 'The highlighted phrases are the two definitions:' : 'The highlighted part of the clue is the definition:'}</p>
+                    <p className="definition-quote">{currentClue.definitionParts.map((part) => `“${part}”`).join(' and ')}</p>
+                  </section>
+                </div>
+              )}
+            </div>
             <div>
               <RevealButton expanded={state.reveals.indicators} onClick={() => setReveal('indicators')}>Indicators</RevealButton>
               {state.reveals.indicators && (

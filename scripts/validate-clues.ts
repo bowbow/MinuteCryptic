@@ -46,6 +46,21 @@ for (const clue of clues) {
     });
   }
 
+  if (!clue.definitionParts.length) fail(clue.id, 'At least one definition part is required.');
+  for (const [index, part] of clue.definitionParts.entries()) {
+    if (!part.trim()) {
+      fail(clue.id, `Definition part ${index + 1} must not be empty.`);
+    } else if (!normalizedClue.includes(part.trim().toLocaleLowerCase())) {
+      fail(clue.id, `Definition part “${part}” does not occur exactly in the clue text.`);
+    }
+  }
+  if (clue.type === 'double-definition' && clue.definitionParts.length !== 2) {
+    fail(clue.id, 'Double definitions must identify exactly two definition parts.');
+  }
+  if (clue.type === 'cryptic-definition' && clue.definitionParts.join('').toLocaleLowerCase() !== clue.clue.toLocaleLowerCase()) {
+    fail(clue.id, 'A cryptic definition must identify the whole clue as its definition.');
+  }
+
   const hintWords: string[] = clue.wordplayHint.toUpperCase().match(/[A-Z]+/g) ?? [];
   if (hintWords.includes(normalizedAnswer)) {
     fail(clue.id, 'Wordplay hint reveals the complete normalized answer as a standalone word.');

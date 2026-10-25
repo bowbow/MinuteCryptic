@@ -168,6 +168,14 @@ button:focus-visible, a:focus-visible {
   line-height: 1.12;
 }
 
+.definition-highlight {
+  padding: 0 .08em;
+  background: #f0c66f;
+  color: inherit;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
 .enumeration { color: #6d665c; font-weight: 700; margin: 1rem 0 2rem; }
 
 .answer-mask {
@@ -226,6 +234,7 @@ button:focus-visible, a:focus-visible {
 .hint-panel ul { list-style: none; margin: 0; padding: 0; }
 .hint-panel li + li { margin-top: .85rem; }
 .hint-panel li span { display: block; color: #5f5a51; margin-top: .2rem; }
+.hint-panel .definition-quote { margin-top: .55rem; font-weight: 800; color: #225c59; }
 
 .text-button {
   display: block;

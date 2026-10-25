@@ -27,6 +27,7 @@ This is inspired by the concise, one-clue-at-a-time experience of Minute Cryptic
 After the button is pressed, display one random clue and its enumeration. Provide these controls:
 
 - `Indicators`: reveal the indicator word or phrase and briefly state what it signals.
+- `Show definition`: highlight the exact definition portion of the clue. Highlight both portions for a double definition and the whole clue for a cryptic definition.
 - `Fodder`: reveal the source letters or word components used by the wordplay.
 - `Wordplay`: reveal a helpful parse of the construction without directly printing the solution.
 - `Reveal a letter`: reveal one additional, previously hidden solution letter on each press. Preserve spaces, punctuation, and word boundaries. Disable the control when all letters are visible.
@@ -98,6 +99,7 @@ type CrypticClue = {
     | "cryptic-definition"
     | "mixed";
   definition: string;
+  definitionParts: string[];
   indicators: Array<{
     text: string;
     explanation: string;
@@ -226,7 +228,7 @@ The task is complete only when:
 
 1. `npm install` followed by `npm run dev` launches the app locally.
 2. The initial button produces a random clue from the bundled data.
-3. All four requested hint mechanisms work correctly and independently.
+3. All five requested hint mechanisms work correctly and independently.
 4. Answer reveal and full parsing work.
 5. Clues do not repeat until the library is exhausted, including across refreshes.
 6. At least 100 original validated clues ship with the app.

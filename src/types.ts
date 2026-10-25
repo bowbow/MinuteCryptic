@@ -25,6 +25,7 @@ export type CrypticClue = {
   enumeration: string;
   type: ClueType;
   definition: string;
+  definitionParts: string[];
   indicators: HintDetail[];
   fodder: HintDetail[];
   wordplayHint: string;
