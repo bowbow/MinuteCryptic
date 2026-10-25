@@ -17,7 +17,7 @@ describe('App', () => {
     expect(screen.queryByLabelText('Fodder hint')).not.toBeInTheDocument();
     expect(screen.queryByText('The answer', { selector: 'p' })).not.toBeInTheDocument();
 
-    await user.click(screen.getByRole('button', { name: 'Show definition' }));
+    await user.click(screen.getByRole('button', { name: 'Definition' }));
     expect(screen.getByLabelText('Definition hint')).toBeInTheDocument();
     expect(document.querySelector('.clue-highlight--definition')).not.toBeNull();
     expect(screen.queryByLabelText('Fodder hint')).not.toBeInTheDocument();
@@ -33,8 +33,7 @@ describe('App', () => {
     const user = userEvent.setup();
     render(<App />);
     await user.click(screen.getByRole('button', { name: /get a clue/i }));
-    await user.click(screen.getByRole('button', { name: 'Wordplay' }));
-    await user.click(screen.getByRole('button', { name: 'Show definition' }));
+    await user.click(screen.getByRole('button', { name: 'Definition' }));
     await user.click(screen.getByRole('button', { name: /reveal answer/i }));
 
     const answerPanel = screen.getByText('The answer', { selector: 'p' }).closest('section');
@@ -42,10 +41,8 @@ describe('App', () => {
     expect(within(answerPanel!).getByText(/Full parse:/)).toBeInTheDocument();
 
     await user.click(screen.getByRole('button', { name: /reset clue/i }));
-    expect(screen.queryByLabelText('Wordplay hint')).not.toBeInTheDocument();
     expect(screen.queryByLabelText('Definition hint')).not.toBeInTheDocument();
     expect(screen.queryByText('The answer', { selector: 'p' })).not.toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Wordplay' })).toHaveAttribute('aria-expanded', 'false');
-    expect(screen.getByRole('button', { name: 'Show definition' })).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.getByRole('button', { name: 'Definition' })).toHaveAttribute('aria-expanded', 'false');
   });
 });

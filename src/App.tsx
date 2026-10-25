@@ -57,7 +57,7 @@ function RevealButton({
   children: React.ReactNode;
   expanded: boolean;
   onClick: () => void;
-  tone: 'definition' | 'indicator' | 'fodder' | 'wordplay';
+  tone: 'definition' | 'indicator' | 'fodder';
 }) {
   return (
     <button className={`hint-button hint-button--${tone}`} aria-expanded={expanded} onClick={onClick} type="button">
@@ -140,7 +140,7 @@ export default function App() {
         <section className="landing" aria-labelledby="welcome-title">
           <p className="eyebrow">Your next small puzzle</p>
           <h1 id="welcome-title">One clue.<br />Take your time.</h1>
-          <p className="intro">Reveal the definition, indicators, fodder, wordplay, or a letter whenever you need a nudge.</p>
+          <p className="intro">Reveal the definition, indicators, fodder, or a letter whenever you need a nudge.</p>
           <button className="primary-button" type="button" onClick={start}>Get a clue <span aria-hidden="true">→</span></button>
         </section>
       ) : (
@@ -171,7 +171,7 @@ export default function App() {
 
           <div className="hint-grid" aria-label="Clue hints">
             <div>
-              <RevealButton tone="definition" expanded={state.reveals.definition} onClick={() => setReveal('definition')}>Show definition</RevealButton>
+              <RevealButton tone="definition" expanded={state.reveals.definition} onClick={() => setReveal('definition')}>Definition</RevealButton>
               {state.reveals.definition && (
                 <div className="reveal" aria-live="polite">
                   <section className="hint-panel" aria-label="Definition hint">
@@ -195,17 +195,6 @@ export default function App() {
               {state.reveals.fodder && (
                 <div className="reveal" aria-live="polite">
                   <HintPanel title="Fodder" items={currentClue.fodder} emptyMessage="This clue type has no explicit fodder." />
-                </div>
-              )}
-            </div>
-            <div>
-              <RevealButton tone="wordplay" expanded={state.reveals.wordplay} onClick={() => setReveal('wordplay')}>Wordplay</RevealButton>
-              {state.reveals.wordplay && (
-                <div className="reveal" aria-live="polite">
-                  <section className="hint-panel" aria-label="Wordplay hint">
-                    <p className="hint-label">Wordplay</p>
-                    <p>{currentClue.wordplayHint}</p>
-                  </section>
                 </div>
               )}
             </div>

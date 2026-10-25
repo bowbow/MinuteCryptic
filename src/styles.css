@@ -222,7 +222,6 @@ button:focus-visible, a:focus-visible {
 .hint-button--definition[aria-expanded="true"] { background: #f0c66f; color: #25231f; }
 .hint-button--indicator[aria-expanded="true"] { background: #f0a58f; color: #25231f; }
 .hint-button--fodder[aria-expanded="true"] { background: #91ced5; color: #25231f; }
-.hint-button--wordplay[aria-expanded="true"] { background: #225c59; color: #fffaf0; }
 .hint-button:disabled { cursor: not-allowed; opacity: .42; background: transparent; color: inherit; }
 
 .reveal { animation: reveal .25s ease both; }

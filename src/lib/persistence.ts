@@ -1,13 +1,12 @@
 import type { DeckState } from './deck';
 
 export const STORAGE_KEY = 'one-cryptic-state';
-export const STORAGE_VERSION = 3;
+export const STORAGE_VERSION = 4;
 
 export type RevealState = {
   definition: boolean;
   indicators: boolean;
   fodder: boolean;
-  wordplay: boolean;
   answer: boolean;
   letters: number[];
 };
@@ -23,7 +22,6 @@ export const emptyReveals = (): RevealState => ({
   definition: false,
   indicators: false,
   fodder: false,
-  wordplay: false,
   answer: false,
   letters: [],
 });
@@ -59,7 +57,6 @@ export function restoreState(raw: string | null, validIds: readonly string[]): P
       typeof reveal.definition !== 'boolean' ||
       typeof reveal.indicators !== 'boolean' ||
       typeof reveal.fodder !== 'boolean' ||
-      typeof reveal.wordplay !== 'boolean' ||
       typeof reveal.answer !== 'boolean' ||
       !Array.isArray(reveal.letters) ||
       reveal.letters.some((position) => !Number.isInteger(position) || position < 0)
