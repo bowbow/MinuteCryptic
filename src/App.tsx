@@ -118,6 +118,12 @@ export default function App() {
     ? state.reveals.letters.length >= letterPositions(currentClue.answer).length
     : false;
 
+  const displayedAnswer = currentClue
+    ? state.reveals.answer
+      ? currentClue.answer
+      : maskAnswer(currentClue.answer, new Set(state.reveals.letters))
+    : '';
+
   const clueHighlights = currentClue
     ? [
         ...(state.reveals.definition ? [{ kind: 'definition' as const, parts: currentClue.definitionParts }] : []),
@@ -164,8 +170,8 @@ export default function App() {
                 : currentClue.clue}
             </h1>
             <p className="enumeration">({currentClue.enumeration})</p>
-            <p className="answer-mask" aria-label={`Answer pattern: ${maskAnswer(currentClue.answer, new Set(state.reveals.letters)).replaceAll('_', 'blank')}`}>
-              {maskAnswer(currentClue.answer, new Set(state.reveals.letters))}
+            <p className="answer-mask" aria-label={state.reveals.answer ? `Answer: ${currentClue.answer}` : `Answer pattern: ${displayedAnswer.replaceAll('_', 'blank')}`}>
+              {displayedAnswer}
             </p>
           </article>
 
@@ -206,7 +212,6 @@ export default function App() {
           {state.reveals.answer ? (
             <section className="answer-panel" aria-live="polite">
               <p className="eyebrow">The answer</p>
-              <h2>{currentClue.answer}</h2>
               <p><strong>Definition:</strong> {currentClue.definition}</p>
               <p><strong>Full parse:</strong> {currentClue.fullParse}</p>
             </section>

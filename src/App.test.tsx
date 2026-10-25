@@ -36,6 +36,7 @@ describe('App', () => {
     await user.click(screen.getByRole('button', { name: 'Definition' }));
     await user.click(screen.getByRole('button', { name: /reveal answer/i }));
 
+    expect(screen.getByLabelText(/^Answer:/)).toHaveTextContent('SILENT');
     const answerPanel = screen.getByText('The answer', { selector: 'p' }).closest('section');
     expect(answerPanel).not.toBeNull();
     expect(within(answerPanel!).getByText(/Full parse:/)).toBeInTheDocument();

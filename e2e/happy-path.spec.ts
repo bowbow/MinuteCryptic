@@ -9,6 +9,7 @@ test('solve a clue with progressive hints', async ({ page }) => {
   const definitionButton = page.getByRole('button', { name: 'Definition' });
   const indicatorButton = page.getByRole('button', { name: 'Indicators' });
   const fodderButton = page.getByRole('button', { name: 'Fodder' });
+  await page.locator('.site-header').hover();
   await expect(definitionButton).toHaveCSS('background-color', 'rgb(240, 198, 111)');
   await expect(indicatorButton).toHaveCSS('background-color', 'rgb(240, 165, 143)');
   await expect(fodderButton).toHaveCSS('background-color', 'rgb(145, 206, 213)');
@@ -25,6 +26,7 @@ test('solve a clue with progressive hints', async ({ page }) => {
   await page.getByRole('button', { name: 'Reveal a letter' }).click();
   await expect(page.locator('.answer-mask')).not.toHaveText(/^[_\s]+$/);
   await page.getByRole('button', { name: 'Reveal answer' }).click();
+  await expect(page.locator('.answer-mask')).toHaveText('SILENT');
   await expect(page.getByText('The answer', { exact: true })).toBeVisible();
   await expect(page.getByText(/Full parse:/)).toBeVisible();
 
