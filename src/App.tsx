@@ -152,7 +152,6 @@ export default function App() {
       ) : (
         <section className="puzzle" aria-labelledby="clue-heading">
           <article className="clue-card">
-            <span className="quote-mark" aria-hidden="true">“</span>
             <h1 id="clue-heading">
               {clueHighlights.length
                 ? segmentClueText(currentClue.clue, clueHighlights).map((segment, index) =>

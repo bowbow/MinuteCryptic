@@ -137,15 +137,6 @@ button:focus-visible, a:focus-visible {
   overflow: hidden;
 }
 
-.quote-mark {
-  position: absolute;
-  top: -1.7rem;
-  left: .7rem;
-  font-family: Georgia, serif;
-  font-size: 8rem;
-  color: rgba(182, 66, 47, .12);
-}
-
 .clue-card h1 {
   position: relative;
   margin: 0;

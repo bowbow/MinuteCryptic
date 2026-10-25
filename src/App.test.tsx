@@ -11,6 +11,7 @@ describe('App', () => {
     expect(screen.queryByLabelText('Clue hints')).not.toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: /get a clue/i }));
     expect(screen.getByLabelText('Clue hints')).toBeInTheDocument();
+    expect(document.querySelector('.quote-mark')).toBeNull();
     expect(screen.queryByText(/practice clue/i)).not.toBeInTheDocument();
     expect(screen.queryByText('anagram', { exact: true })).not.toBeInTheDocument();
 
