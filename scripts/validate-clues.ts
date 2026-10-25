@@ -43,6 +43,14 @@ for (const clue of clues) {
     values.forEach((entry, index) => {
       if (!entry.text.trim()) fail(clue.id, `${kind} ${index + 1} has empty text.`);
       if (!entry.explanation.trim()) fail(clue.id, `${kind} ${index + 1} has empty explanation.`);
+      if (!entry.clueParts.length) fail(clue.id, `${kind} ${index + 1} must identify text to highlight in the clue.`);
+      for (const part of entry.clueParts) {
+        if (!part.trim()) {
+          fail(clue.id, `${kind} ${index + 1} has an empty clue highlight.`);
+        } else if (!normalizedClue.includes(part.trim().toLocaleLowerCase())) {
+          fail(clue.id, `${kind} ${index + 1} highlight “${part}” does not occur exactly in the clue text.`);
+        }
+      }
     });
   }
 

@@ -19,12 +19,14 @@ describe('App', () => {
 
     await user.click(screen.getByRole('button', { name: 'Show definition' }));
     expect(screen.getByLabelText('Definition hint')).toBeInTheDocument();
-    expect(document.querySelector('.definition-highlight')).not.toBeNull();
+    expect(document.querySelector('.clue-highlight--definition')).not.toBeNull();
     expect(screen.queryByLabelText('Fodder hint')).not.toBeInTheDocument();
 
     await user.click(screen.getByRole('button', { name: 'Fodder' }));
     expect(screen.getByLabelText('Fodder hint')).toBeInTheDocument();
     expect(screen.getByLabelText('Indicators hint')).toBeInTheDocument();
+    expect(document.querySelector('.clue-highlight--indicator')).not.toBeNull();
+    expect(document.querySelector('.clue-highlight--fodder')).not.toBeNull();
   });
 
   it('reveals an answer and resets all reveal state for the practice clue', async () => {

@@ -16,6 +16,7 @@ export type ClueType = (typeof clueTypes)[number];
 export type HintDetail = {
   text: string;
   explanation: string;
+  clueParts: string[];
 };
 
 export type CrypticClue = {

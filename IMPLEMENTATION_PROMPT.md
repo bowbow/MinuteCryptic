@@ -26,9 +26,9 @@ This is inspired by the concise, one-clue-at-a-time experience of Minute Cryptic
 
 After the button is pressed, display one random clue and its enumeration. Provide these controls:
 
-- `Indicators`: reveal the indicator word or phrase and briefly state what it signals.
-- `Show definition`: highlight the exact definition portion of the clue. Highlight both portions for a double definition and the whole clue for a cryptic definition.
-- `Fodder`: reveal the source letters or word components used by the wordplay.
+- `Indicators`: reveal the indicator word or phrase, briefly state what it signals, and highlight its exact text in the clue with the indicator color.
+- `Show definition`: highlight the exact definition portion of the clue with the definition color. Highlight both portions for a double definition and the whole clue for a cryptic definition.
+- `Fodder`: reveal the source letters or word components used by the wordplay and highlight their exact surface text in the clue with the fodder color.
 - `Wordplay`: reveal a helpful parse of the construction without directly printing the solution.
 - `Reveal a letter`: reveal one additional, previously hidden solution letter on each press. Preserve spaces, punctuation, and word boundaries. Disable the control when all letters are visible.
 - `Reveal answer`: reveal the complete answer, definition, and full parsing.
@@ -103,10 +103,12 @@ type CrypticClue = {
   indicators: Array<{
     text: string;
     explanation: string;
+    clueParts: string[];
   }>;
   fodder: Array<{
     text: string;
     explanation: string;
+    clueParts: string[];
   }>;
   wordplayHint: string;
   fullParse: string;

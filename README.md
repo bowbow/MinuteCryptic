@@ -1,6 +1,6 @@
 # One Cryptic
 
-A focused, static web app that serves one original cryptic crossword clue at a time. Hints can highlight the definition and reveal the indicators, fodder, wordplay, or individual answer letters. The app includes 100 bundled clues and makes no runtime API calls.
+A focused, static web app that serves one original cryptic crossword clue at a time. Definition, indicator, and fodder hints highlight their exact words in distinct colors; further hints reveal the wordplay or individual answer letters. The app includes 100 bundled clues and makes no runtime API calls.
 
 ## Requirements
 

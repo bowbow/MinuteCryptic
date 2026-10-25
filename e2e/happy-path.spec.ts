@@ -8,11 +8,13 @@ test('solve a clue with progressive hints', async ({ page }) => {
   const firstClue = await page.getByRole('heading', { level: 1 }).textContent();
   await page.getByRole('button', { name: 'Show definition' }).click();
   await expect(page.getByLabel('Definition hint')).toBeVisible();
-  await expect(page.locator('.definition-highlight')).toBeVisible();
+  await expect(page.locator('.clue-highlight--definition')).toBeVisible();
   await page.getByRole('button', { name: 'Indicators' }).click();
   await expect(page.getByLabel('Indicators hint')).toBeVisible();
+  await expect(page.locator('.clue-highlight--indicator')).toBeVisible();
   await page.getByRole('button', { name: 'Fodder' }).click();
   await expect(page.getByLabel('Fodder hint')).toBeVisible();
+  await expect(page.locator('.clue-highlight--fodder')).toBeVisible();
   await page.getByRole('button', { name: 'Wordplay' }).click();
   await expect(page.getByLabel('Wordplay hint')).toBeVisible();
 
