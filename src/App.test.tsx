@@ -49,4 +49,30 @@ describe('App', () => {
     expect(screen.queryByText('The answer', { selector: 'p' })).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Definition' })).toHaveAttribute('aria-expanded', 'false');
   });
+
+  it('checks entered answers and offers another clue after a correct solve', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    await user.click(screen.getByRole('button', { name: /get a clue/i }));
+
+    const answerInput = screen.getByRole('textbox', { name: /your answer/i });
+    expect(answerInput).toHaveAttribute('placeholder', '______');
+
+    await user.type(answerInput, 'listen');
+    await user.click(screen.getByRole('button', { name: /check answer/i }));
+    expect(screen.getByRole('status')).toHaveTextContent(/not quite.*keep trying/i);
+    expect(answerInput).toHaveValue('LISTEN');
+
+    await user.clear(answerInput);
+    await user.type(answerInput, 'silent');
+    await user.click(screen.getByRole('button', { name: /check answer/i }));
+
+    expect(screen.getByRole('status')).toHaveTextContent(/that’s right/i);
+    expect(screen.getByLabelText('Answer: SILENT')).toHaveTextContent('SILENT');
+    expect(screen.getByRole('button', { name: /play another clue/i })).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: /play another clue/i }));
+    expect(screen.getByRole('textbox', { name: /your answer/i })).toHaveValue('');
+    expect(screen.queryByText(/that’s right/i)).not.toBeInTheDocument();
+  });
 });

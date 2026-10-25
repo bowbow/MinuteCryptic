@@ -7,3 +7,17 @@ test-results/
 .DS_Store
 Thumbs.db
 *.log
+
+# Terraform local state, plans, and local variable values
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+*.tfvars
+!*.tfvars.example
+crash.log
+crash.*.log
+
+# Deployment packages
+*.tgz
+*.tar.gz

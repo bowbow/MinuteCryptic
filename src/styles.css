@@ -23,9 +23,21 @@ body {
 
 button, a { -webkit-tap-highlight-color: transparent; }
 
-button:focus-visible, a:focus-visible {
+button:focus-visible, a:focus-visible, input:focus-visible {
   outline: 3px solid #225c59;
   outline-offset: 4px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .app-shell {
@@ -168,6 +180,57 @@ button:focus-visible, a:focus-visible {
   overflow-wrap: anywhere;
 }
 
+.answer-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: .75rem;
+  align-items: end;
+}
+
+.answer-input {
+  width: 100%;
+  min-width: 0;
+  min-height: 3.15rem;
+  border: 0;
+  border-bottom: 2px solid #225c59;
+  border-radius: 0;
+  background: transparent;
+  color: #225c59;
+  padding: .45rem .15rem;
+  font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  font-size: clamp(1.25rem, 5vw, 1.8rem);
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+.answer-input::placeholder {
+  color: #225c59;
+  opacity: .72;
+}
+
+.check-button {
+  min-height: 3.15rem;
+  border: 1px solid #225c59;
+  background: #225c59;
+  color: #fffaf0;
+  padding: .75rem 1rem;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background-color .18s ease, color .18s ease;
+}
+
+.check-button:hover { background: #174744; }
+
+.answer-feedback {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-weight: 800;
+}
+
+.answer-feedback--incorrect { color: #9b3427; }
+
 .hint-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -250,6 +313,23 @@ button:focus-visible, a:focus-visible {
 .answer-panel p { margin: .5rem 0 0; line-height: 1.55; }
 .another { margin-top: 1.8rem; }
 
+.success-panel {
+  margin-top: 1.1rem;
+  padding: 1.35rem 1.5rem;
+  border: 2px solid #225c59;
+  background: rgba(145, 206, 213, .28);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  animation: reveal .25s ease both;
+}
+
+.success-panel .eyebrow { color: #225c59; margin-bottom: .25rem; }
+.success-panel h2 { margin: 0; font-family: Georgia, serif; font-size: 1.8rem; }
+.success-panel p:last-child { margin: .35rem 0 0; color: #514d46; }
+.success-panel .primary-button { flex: 0 0 auto; }
+
 footer {
   border-top: 1px solid rgba(32, 32, 29, .24);
   padding: 1.25rem 0 1.5rem;
@@ -273,6 +353,11 @@ footer {
   .hint-grid { grid-template-columns: 1fr; }
   .clue-card { padding: 2rem 1.3rem; }
   .answer-mask { letter-spacing: .14em; }
+  .answer-form { grid-template-columns: 1fr; }
+  .answer-input { letter-spacing: .12em; }
+  .answer-feedback { grid-column: 1; }
+  .success-panel { align-items: stretch; flex-direction: column; }
+  .success-panel .primary-button { justify-content: space-between; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { FIXED_CLUE_ID } from './config';
 import { clues } from './data/clues';
-import { letterPositions, maskAnswer, revealNextLetter } from './lib/answer';
+import { letterPositions, maskAnswer, normalizeLetters, revealNextLetter } from './lib/answer';
 import { advanceDeck, createDeck } from './lib/deck';
 import { segmentClueText } from './lib/clue-text';
 import {
@@ -69,6 +69,8 @@ function RevealButton({
 
 export default function App() {
   const [state, setState] = useState<PersistedState>(readInitialState);
+  const [guess, setGuess] = useState('');
+  const [answerFeedback, setAnswerFeedback] = useState<'empty' | 'incorrect' | 'correct' | null>(null);
 
   useEffect(() => {
     window.localStorage.setItem(STORAGE_KEY, serializeState(state));
@@ -81,6 +83,8 @@ export default function App() {
 
   const start = () => {
     const deck = createDeck(activeClueIds);
+    setGuess('');
+    setAnswerFeedback(null);
     setState({ version: STORAGE_VERSION, started: true, deck, reveals: emptyReveals() });
   };
 
@@ -103,6 +107,8 @@ export default function App() {
   };
 
   const next = () => {
+    setGuess('');
+    setAnswerFeedback(null);
     setState((current) => {
       const deck = current.deck ?? createDeck(activeClueIds);
       return {
@@ -112,6 +118,36 @@ export default function App() {
         reveals: emptyReveals(),
       };
     });
+  };
+
+  const checkAnswer = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!currentClue) return;
+
+    const normalizedGuess = normalizeLetters(guess);
+    if (!normalizedGuess) {
+      setAnswerFeedback('empty');
+      return;
+    }
+
+    if (normalizedGuess !== normalizeLetters(currentClue.answer)) {
+      setAnswerFeedback('incorrect');
+      return;
+    }
+
+    setGuess(currentClue.answer);
+    setAnswerFeedback('correct');
+    setState((current) => ({
+      ...current,
+      reveals: { ...current.reveals, answer: true },
+    }));
+  };
+
+  const revealAnswer = () => {
+    if (!currentClue) return;
+    setGuess(currentClue.answer);
+    setAnswerFeedback(null);
+    setReveal('answer');
   };
 
   const allLettersVisible = currentClue
@@ -164,9 +200,36 @@ export default function App() {
                 : currentClue.clue}
             </h1>
             <p className="enumeration">({currentClue.enumeration})</p>
-            <p className="answer-mask" aria-label={state.reveals.answer ? `Answer: ${currentClue.answer}` : `Answer pattern: ${displayedAnswer.replaceAll('_', 'blank')}`}>
-              {displayedAnswer}
-            </p>
+            {state.reveals.answer ? (
+              <p className="answer-mask" aria-label={`Answer: ${currentClue.answer}`}>
+                {displayedAnswer}
+              </p>
+            ) : (
+              <form className="answer-form" onSubmit={checkAnswer}>
+                <label className="sr-only" htmlFor="answer-input">Your answer</label>
+                <input
+                  id="answer-input"
+                  className="answer-input"
+                  type="text"
+                  value={guess}
+                  placeholder={displayedAnswer}
+                  onChange={(event) => {
+                    setGuess(event.target.value.toUpperCase());
+                    setAnswerFeedback(null);
+                  }}
+                  aria-describedby={answerFeedback === 'empty' || answerFeedback === 'incorrect' ? 'answer-feedback' : undefined}
+                  autoComplete="off"
+                  autoCapitalize="characters"
+                  spellCheck={false}
+                />
+                <button className="check-button" type="submit">Check answer</button>
+                {(answerFeedback === 'empty' || answerFeedback === 'incorrect') && (
+                  <p className="answer-feedback answer-feedback--incorrect" id="answer-feedback" role="status">
+                    {answerFeedback === 'empty' ? 'Type an answer before checking.' : 'Not quite — keep trying.'}
+                  </p>
+                )}
+              </form>
+            )}
           </article>
 
           <div className="hint-grid" aria-label="Clue hints">
@@ -210,12 +273,25 @@ export default function App() {
               <p><strong>Full parse:</strong> {currentClue.fullParse}</p>
             </section>
           ) : (
-            <button className="text-button" type="button" onClick={() => setReveal('answer')}>Reveal answer</button>
+            <button className="text-button" type="button" onClick={revealAnswer}>Reveal answer</button>
           )}
 
-          <button className="primary-button another" type="button" onClick={next}>
-            {isFixedClueMode ? 'Reset clue' : 'Another clue'} <span aria-hidden="true">→</span>
-          </button>
+          {answerFeedback === 'correct' ? (
+            <section className="success-panel" role="status">
+              <div>
+                <p className="eyebrow">Correct</p>
+                <h2>That’s right!</h2>
+                <p>Nicely solved.</p>
+              </div>
+              <button className="primary-button" type="button" onClick={next}>
+                Play another clue <span aria-hidden="true">→</span>
+              </button>
+            </section>
+          ) : (
+            <button className="primary-button another" type="button" onClick={next}>
+              {isFixedClueMode ? 'Reset clue' : 'Another clue'} <span aria-hidden="true">→</span>
+            </button>
+          )}
         </section>
       )}
 
