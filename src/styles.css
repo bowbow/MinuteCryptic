@@ -128,21 +128,6 @@ button:focus-visible, a:focus-visible {
 
 .puzzle { padding: clamp(2.4rem, 7vw, 4.5rem) 0 3rem; }
 
-.progress-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-.progress-row .eyebrow { margin: 0; }
-
-.clue-type {
-  background: #ded3c1;
-  padding: .35rem .55rem;
-  color: #504b43;
-}
-
 .clue-card {
   position: relative;
   border: 1px solid rgba(32, 32, 29, .75);

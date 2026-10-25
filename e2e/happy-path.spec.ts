@@ -4,6 +4,8 @@ test('solve a clue with progressive hints', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByRole('heading', { name: /one clue/i })).toBeVisible();
   await page.getByRole('button', { name: /get a clue/i }).click();
+  await expect(page.getByText(/practice clue/i)).toHaveCount(0);
+  await expect(page.getByText('anagram', { exact: true })).toHaveCount(0);
 
   const firstClue = await page.getByRole('heading', { level: 1 }).textContent();
   const definitionButton = page.getByRole('button', { name: 'Definition' });

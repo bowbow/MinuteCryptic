@@ -151,11 +151,6 @@ export default function App() {
         </section>
       ) : (
         <section className="puzzle" aria-labelledby="clue-heading">
-          <div className="progress-row">
-            <span className="eyebrow">{isFixedClueMode ? 'Practice clue' : `Clue ${state.deck!.index + 1} of ${clues.length}`}</span>
-            <span className="clue-type">{currentClue.type.replace('-', ' ')}</span>
-          </div>
-
           <article className="clue-card">
             <span className="quote-mark" aria-hidden="true">“</span>
             <h1 id="clue-heading">
