@@ -1,0 +1,41 @@
+import { render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { describe, expect, it } from 'vitest';
+import App from './App';
+
+describe('App', () => {
+  it('starts on demand and reveals hints independently', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    expect(screen.queryByLabelText('Clue hints')).not.toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: /get a clue/i }));
+    expect(screen.getByLabelText('Clue hints')).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'Indicators' }));
+    expect(screen.getByLabelText('Indicators hint')).toBeInTheDocument();
+    expect(screen.queryByLabelText('Fodder hint')).not.toBeInTheDocument();
+    expect(screen.queryByText('The answer', { selector: 'p' })).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'Fodder' }));
+    expect(screen.getByLabelText('Fodder hint')).toBeInTheDocument();
+    expect(screen.getByLabelText('Indicators hint')).toBeInTheDocument();
+  });
+
+  it('reveals an answer and resets all reveal state for another clue', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    await user.click(screen.getByRole('button', { name: /get a clue/i }));
+    await user.click(screen.getByRole('button', { name: 'Wordplay' }));
+    await user.click(screen.getByRole('button', { name: /reveal answer/i }));
+
+    const answerPanel = screen.getByText('The answer', { selector: 'p' }).closest('section');
+    expect(answerPanel).not.toBeNull();
+    expect(within(answerPanel!).getByText(/Full parse:/)).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: /another clue/i }));
+    expect(screen.queryByLabelText('Wordplay hint')).not.toBeInTheDocument();
+    expect(screen.queryByText('The answer', { selector: 'p' })).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Wordplay' })).toHaveAttribute('aria-expanded', 'false');
+  });
+});
