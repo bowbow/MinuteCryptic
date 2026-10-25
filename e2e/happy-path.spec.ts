@@ -22,8 +22,8 @@ test('solve a clue with progressive hints', async ({ page }) => {
   await expect(page.getByText('The answer', { exact: true })).toBeVisible();
   await expect(page.getByText(/Full parse:/)).toBeVisible();
 
-  await page.getByRole('button', { name: /another clue/i }).click();
-  await expect(page.getByRole('heading', { level: 1 })).not.toHaveText(firstClue ?? '');
+  await page.getByRole('button', { name: /reset clue/i }).click();
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(firstClue ?? '');
   await expect(page.getByLabel('Wordplay hint')).toHaveCount(0);
   await expect(page.getByLabel('Definition hint')).toHaveCount(0);
   await expect(page.getByText('The answer', { exact: true })).toHaveCount(0);

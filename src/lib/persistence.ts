@@ -1,7 +1,7 @@
 import type { DeckState } from './deck';
 
 export const STORAGE_KEY = 'one-cryptic-state';
-export const STORAGE_VERSION = 2;
+export const STORAGE_VERSION = 3;
 
 export type RevealState = {
   definition: boolean;

@@ -27,7 +27,7 @@ describe('App', () => {
     expect(screen.getByLabelText('Indicators hint')).toBeInTheDocument();
   });
 
-  it('reveals an answer and resets all reveal state for another clue', async () => {
+  it('reveals an answer and resets all reveal state for the practice clue', async () => {
     const user = userEvent.setup();
     render(<App />);
     await user.click(screen.getByRole('button', { name: /get a clue/i }));
@@ -39,7 +39,7 @@ describe('App', () => {
     expect(answerPanel).not.toBeNull();
     expect(within(answerPanel!).getByText(/Full parse:/)).toBeInTheDocument();
 
-    await user.click(screen.getByRole('button', { name: /another clue/i }));
+    await user.click(screen.getByRole('button', { name: /reset clue/i }));
     expect(screen.queryByLabelText('Wordplay hint')).not.toBeInTheDocument();
     expect(screen.queryByLabelText('Definition hint')).not.toBeInTheDocument();
     expect(screen.queryByText('The answer', { selector: 'p' })).not.toBeInTheDocument();

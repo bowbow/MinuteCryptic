@@ -44,6 +44,10 @@ For GitHub Pages, serve the built site at the domain root or set Vite's `base` o
 
 The browser stores a versioned shuffled clue order, the current clue, and revealed hints in `localStorage`. Every clue appears once per cycle. After all 100 have been seen, a new shuffle starts without immediately repeating the previous clue. Clearing site data starts over.
 
+## Current testing lock
+
+The app is temporarily locked to one practice clue so development and testing do not reveal the rest of the library. `src/config.ts` contains the single `FIXED_CLUE_ID` switch. Set it to `null` to restore the normal randomized, non-repeating deck.
+
 ## Repository notes
 
 The original build brief remains in [`IMPLEMENTATION_PROMPT.md`](./IMPLEMENTATION_PROMPT.md). Clues live in `src/data/clues.ts`; the production app has no AI, backend, database, account system, or secrets.

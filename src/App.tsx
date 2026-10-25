@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { FIXED_CLUE_ID } from './config';
 import { clues } from './data/clues';
 import { letterPositions, maskAnswer, revealNextLetter } from './lib/answer';
 import { advanceDeck, createDeck } from './lib/deck';
@@ -16,10 +17,12 @@ import type { HintDetail } from './types';
 
 const clueIds = clues.map((clue) => clue.id);
 const cluesById = new Map(clues.map((clue) => [clue.id, clue]));
+const activeClueIds = FIXED_CLUE_ID ? [FIXED_CLUE_ID] : clueIds;
+const isFixedClueMode = FIXED_CLUE_ID !== null;
 
 function readInitialState(): PersistedState {
   if (typeof window !== 'undefined') {
-    const restored = restoreState(window.localStorage.getItem(STORAGE_KEY), clueIds);
+    const restored = restoreState(window.localStorage.getItem(STORAGE_KEY), activeClueIds);
     if (restored) return restored;
   }
   return { version: STORAGE_VERSION, started: false, deck: null, reveals: emptyReveals() };
@@ -75,7 +78,7 @@ export default function App() {
   }, [state.deck, state.started]);
 
   const start = () => {
-    const deck = createDeck(clueIds);
+    const deck = createDeck(activeClueIds);
     setState({ version: STORAGE_VERSION, started: true, deck, reveals: emptyReveals() });
   };
 
@@ -99,11 +102,11 @@ export default function App() {
 
   const next = () => {
     setState((current) => {
-      const deck = current.deck ?? createDeck(clueIds);
+      const deck = current.deck ?? createDeck(activeClueIds);
       return {
         version: STORAGE_VERSION,
         started: true,
-        deck: advanceDeck(deck, clueIds),
+        deck: advanceDeck(deck, activeClueIds),
         reveals: emptyReveals(),
       };
     });
@@ -127,13 +130,13 @@ export default function App() {
         <section className="landing" aria-labelledby="welcome-title">
           <p className="eyebrow">Your next small puzzle</p>
           <h1 id="welcome-title">One clue.<br />Take your time.</h1>
-          <p className="intro">Reveal indicators, fodder, wordplay, or a letter whenever you need a nudge.</p>
+          <p className="intro">Reveal the definition, indicators, fodder, wordplay, or a letter whenever you need a nudge.</p>
           <button className="primary-button" type="button" onClick={start}>Get a clue <span aria-hidden="true">→</span></button>
         </section>
       ) : (
         <section className="puzzle" aria-labelledby="clue-heading">
           <div className="progress-row">
-            <span className="eyebrow">Clue {state.deck!.index + 1} of {clues.length}</span>
+            <span className="eyebrow">{isFixedClueMode ? 'Practice clue' : `Clue ${state.deck!.index + 1} of ${clues.length}`}</span>
             <span className="clue-type">{currentClue.type.replace('-', ' ')}</span>
           </div>
 
@@ -212,7 +215,9 @@ export default function App() {
             <button className="text-button" type="button" onClick={() => setReveal('answer')}>Reveal answer</button>
           )}
 
-          <button className="primary-button another" type="button" onClick={next}>Another clue <span aria-hidden="true">→</span></button>
+          <button className="primary-button another" type="button" onClick={next}>
+            {isFixedClueMode ? 'Reset clue' : 'Another clue'} <span aria-hidden="true">→</span>
+          </button>
         </section>
       )}
 
